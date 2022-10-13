@@ -1,7 +1,9 @@
 import 'dart:async';
 // ignore: unnecessary_import
 import 'package:event_attendee/screens/qr_scan_screen.dart';
+// ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
+// ignore: unused_import
 import 'package:event_attendee/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 

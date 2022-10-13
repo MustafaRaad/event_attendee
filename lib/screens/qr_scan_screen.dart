@@ -60,13 +60,10 @@ class QrScanScreen extends StatelessWidget {
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
                             color: Colors.black),
-                      )))
-              //  () {
-              // Navigator.pushNamed(context, LoginScreen.LoginScreen.routeName);
-              // },
-              )
+                      ))))
         ],
       ),
     ));
   }
 }
+
