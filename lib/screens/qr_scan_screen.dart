@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../common/theme_helper.dart';
-import '../widgets/header_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class QrScanScreen extends StatefulWidget {
@@ -20,24 +19,6 @@ class _QrScanScreenState extends State<QrScanScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        // title: const Text(
-        //   "Profile Page",
-        //   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        // ),
-        // elevation: 0,
-        // iconTheme: const IconThemeData(color: Colors.white),
-        // flexibleSpace: Container(
-        //   decoration: BoxDecoration(
-        //       gradient: LinearGradient(
-        //           begin: Alignment.topLeft,
-        //           end: Alignment.bottomRight,
-        //           colors: <Color>[
-        //         Theme.of(context).primaryColor,
-        //         Theme.of(context).colorScheme.secondary,
-        //       ])),
-        // ),
-        // ),
         body: SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -134,21 +115,6 @@ class _QRViewExampleState extends State<QRViewExample> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  // if (result != null)
-                  //   ElevatedButton(
-                  //     style: TextButton.styleFrom(
-                  //       backgroundColor: Theme.of(context).primaryColor,
-                  //       padding: const EdgeInsets.all(8.0),
-                  //       textStyle: const TextStyle(fontSize: 16),
-                  //     ),
-                  //     // onPressed: () => launchUrl(Uri.parse('${result!.code}')),
-                  //     onPressed: () => setState(() {
-                  //       // _launched = _launchInWebViewWithoutJavaScript(toLaunch);
-                  //     }),
-                  //     child: Text('${result!.code}'),
-                  //   )
-                  // else
-                  //   const Text('Scan QR code'),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -196,32 +162,6 @@ class _QRViewExampleState extends State<QRViewExample> {
                       )
                     ],
                   ),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     Container(
-                  //       margin: const EdgeInsets.all(8),
-                  //       child: ElevatedButton(
-                  //         onPressed: () async {
-                  //           await controller?.pauseCamera();
-                  //         },
-                  //         child: const Text('pause',
-                  //             style: TextStyle(fontSize: 20)),
-                  //       ),
-                  //     ),
-                  //     Container(
-                  //       margin: const EdgeInsets.all(8),
-                  //       child: ElevatedButton(
-                  //         onPressed: () async {
-                  //           await controller?.resumeCamera();
-                  //         },
-                  //         child: const Text('resume',
-                  //             style: TextStyle(fontSize: 20)),
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
                 ],
               ),
             ),
