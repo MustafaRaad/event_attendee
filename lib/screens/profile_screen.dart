@@ -1,5 +1,5 @@
 // ignore: unnecessary_import
-import 'package:event_attendee/screens/qr_scan_screen.dart';
+import 'package:event_attendee/screens/old_qr_scan_screen.dart';
 // ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
