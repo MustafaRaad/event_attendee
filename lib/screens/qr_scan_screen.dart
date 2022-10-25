@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:io';
 import 'dart:developer';
 
@@ -42,13 +44,6 @@ class _QrScanScreenState extends State<QrScanScreen> {
                       builder: (context) => const QRViewExample(),
                     ));
                   },
-                  // onPressed: () {
-                  //   Navigator.pushReplacement(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => const QrScanScreen(),
-                  //       ));
-                  // },
                   child: const Padding(
                       padding: EdgeInsets.fromLTRB(40, 10, 40, 10),
                       child: Text(
@@ -75,7 +70,6 @@ class _QRViewExampleState extends State<QRViewExample> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  String url = '';
 
   Future<void>? _launched;
 
@@ -91,13 +85,12 @@ class _QRViewExampleState extends State<QRViewExample> {
   }
 
   Future<void> _launchInWebViewWithoutJavaScript(Uri url) async {
-    print('** URL func **');
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.inAppWebView,
-      webViewConfiguration: const WebViewConfiguration(
-          enableJavaScript: false, enableDomStorage: false),
-    )) {
+    if (!await canLaunchUrl(url)) {
+      launchUrl(
+        url,
+        mode: LaunchMode.inAppWebView,
+      );
+    } else {
       throw 'Could not launch $url';
     }
   }
@@ -193,16 +186,14 @@ class _QRViewExampleState extends State<QRViewExample> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    final Uri toLaunch = Uri(scheme: 'https', host: 'event.leftsphere.com/');
+    late Uri toLaunch;
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-        if (kDebugMode) {
-          print('** Listner func **');
-        }
+        toLaunch = Uri.parse('${result!.code}');
         _launched = _launchInWebViewWithoutJavaScript(toLaunch);
       });
     });
