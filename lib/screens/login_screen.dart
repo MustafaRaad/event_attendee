@@ -6,6 +6,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../common/theme_helper.dart';
 import '../widgets/header_widget.dart';
+import '../api/base_api.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +20,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final double _headerHeight = 250;
   final Key _formKey = GlobalKey<FormState>();
+  late String email;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextField(
                             decoration: ThemeHelper().textInputDecoration(
                                 'Email', 'Enter Your Email'),
+                            onChanged: (val) => setState(() => email = val),
                           ),
                           const SizedBox(
                             height: 15.0,
@@ -59,6 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               obscureText: true,
                               decoration: ThemeHelper().textInputDecoration(
                                   'Password', 'Enter your password'),
+                              onChanged: (val) =>
+                                  setState(() => password = val),
                             ),
                           ),
                           const SizedBox(height: 35.0),
@@ -68,12 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   onPressed: () {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ProfileScreen(),
-                                        ));
+                                    getReq(context);
                                   },
                                   child: const Padding(
                                       padding:
@@ -98,5 +100,23 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> getReq(BuildContext context) async {
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://event.leftsphere.com/back/api/login'));
+    request.fields.addAll({'email': email, 'password': '!@#app@test.com'});
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) => MyHomePage(customer: customer)));
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 }

@@ -22,7 +22,7 @@ class EventAtendeeApp extends StatelessWidget {
           colorScheme:
               ColorScheme.fromSwatch().copyWith(secondary: _accentColor),
           scaffoldBackgroundColor: Colors.grey.shade100,
-          fontFamily: 'Roboto',
+          fontFamily: 'Cairo',
           textTheme: const TextTheme(
             headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
             headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),

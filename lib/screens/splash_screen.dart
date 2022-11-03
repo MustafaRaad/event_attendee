@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Timer(const Duration(seconds: 2), () {
       setState(() {
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const QrScanScreen()),
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
             (route) => false);
       });
     });
