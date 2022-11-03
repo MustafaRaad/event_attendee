@@ -1,12 +1,15 @@
 // ignore_for_file: unnecessary_import, unused_import
 
+import 'package:event_attendee/repositry/auth_repo.dart';
 import 'package:event_attendee/screens/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../common/theme_helper.dart';
+import '../models/auth_info.dart';
+import '../models/user_info_model.dart';
 import '../widgets/header_widget.dart';
-import '../api/base_api.dart';
+import '../api/URL_paths.dart';
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
@@ -19,9 +22,25 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final double _headerHeight = 250;
-  final Key _formKey = GlobalKey<FormState>();
-  late String email;
-  late String password;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  AuthRepo repo = new AuthRepo();
+  bool _isLoading = false;
+  String _email = "";
+  String _password = "";
+  bool _rememberMe = false, isSwitched = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _isLoading = false;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           TextField(
                             decoration: ThemeHelper().textInputDecoration(
                                 'Email', 'Enter Your Email'),
-                            onChanged: (val) => setState(() => email = val),
+                            onChanged: (val) => setState(() => _email = val),
                           ),
                           const SizedBox(
                             height: 15.0,
@@ -65,7 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               decoration: ThemeHelper().textInputDecoration(
                                   'Password', 'Enter your password'),
                               onChanged: (val) =>
-                                  setState(() => password = val),
+                                  setState(() => _password = val),
                             ),
                           ),
                           const SizedBox(height: 35.0),
@@ -103,20 +122,50 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> getReq(BuildContext context) async {
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('https://event.leftsphere.com/back/api/login'));
-    request.fields.addAll({'email': email, 'password': '!@#app@test.com'});
+    assert(() {
+      return true;
+    }());
+    try {
+      if (_formKey.currentState!.validate()) {
+        if (mounted) setState(() => _isLoading = true);
+        _formKey.currentState?.save();
+        if (mounted) setState(() => _isLoading = true);
 
-    http.StreamedResponse response = await request.send();
+        UserInfoModel user = await repo.login(_email, _password, _rememberMe);
 
-    if (response.statusCode == 200) {
-      print(await response.stream.bytesToString());
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //         builder: (context) => MyHomePage(customer: customer)));
-    } else {
-      print(response.reasonPhrase);
+        if (mounted) setState(() => _isLoading = false);
+
+        repo.storeToken(user);
+
+        var data = Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const ProfileScreen(),
+          ),
+        );
+      } else {
+        if (mounted) print('else');
+      }
+    } catch (ll) {
+      if (mounted) print(ll);
     }
+
+    if (mounted) setState(() => _isLoading = false);
   }
 }
+  //   var request = http.MultipartRequest(
+  //       'POST', Uri.parse('https://event.leftsphere.com/back/api/login'));
+  //   request.fields.addAll({'email': email, 'password': '!@#app@test.com'});
+
+  //   http.StreamedResponse response = await request.send();
+
+  //   if (response.statusCode == 200) {
+  //     print(await response.stream.bytesToString());
+  //     // Navigator.push(
+  //     //     context,
+  //     //     MaterialPageRoute(
+  //     //         builder: (context) => MyHomePage(customer: customer)));
+  //   } else {
+  //     print(response.reasonPhrase);
+  //   }
+  // }
