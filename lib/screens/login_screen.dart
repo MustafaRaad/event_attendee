@@ -2,6 +2,7 @@
 
 import 'package:event_attendee/repositry/auth_repo.dart';
 import 'package:event_attendee/screens/profile_screen.dart';
+import 'package:event_attendee/screens/qr_scan_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -23,14 +24,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final double _headerHeight = 250;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  AuthRepo repo = new AuthRepo();
+  AuthRepo repo = AuthRepo();
   bool _isLoading = false;
-  String _email = "";
-  String _password = "";
+  String _email = "app@test.com";
+  String _password = "!@#app@test.com";
   bool _rememberMe = false, isSwitched = false;
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
     _isLoading = false;
@@ -38,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    // ignore: todo
     // TODO: implement dispose
     super.dispose();
   }
@@ -140,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
         var data = Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const ProfileScreen(),
+            builder: (context) => const QrScanScreen(),
           ),
         );
       } else {
@@ -153,19 +156,3 @@ class _LoginScreenState extends State<LoginScreen> {
     if (mounted) setState(() => _isLoading = false);
   }
 }
-  //   var request = http.MultipartRequest(
-  //       'POST', Uri.parse('https://event.leftsphere.com/back/api/login'));
-  //   request.fields.addAll({'email': email, 'password': '!@#app@test.com'});
-
-  //   http.StreamedResponse response = await request.send();
-
-  //   if (response.statusCode == 200) {
-  //     print(await response.stream.bytesToString());
-  //     // Navigator.push(
-  //     //     context,
-  //     //     MaterialPageRoute(
-  //     //         builder: (context) => MyHomePage(customer: customer)));
-  //   } else {
-  //     print(response.reasonPhrase);
-  //   }
-  // }

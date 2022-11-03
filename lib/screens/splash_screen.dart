@@ -80,14 +80,14 @@ class _SplashScreenState extends State<SplashScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Text("جاري محاولة تسجيل الدخول ... الرجاء الانتظار"),
-          SizedBox(
+          const Text("جاري محاولة تسجيل الدخول ... الرجاء الانتظار"),
+          const SizedBox(
             height: 20,
           ),
-          isLoading ? CircularProgressIndicator() : Container()
+          isLoading ? const CircularProgressIndicator() : Container()
         ],
       ),
     );

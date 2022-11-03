@@ -17,16 +17,16 @@ class AuthRepo {
     store.storeToken(user.accessToken!);
   }
 
-  Future<UserInfoModel> getUserInfo(
-      {required DateTime fromDate, required DateTime toDate}) {
-    String urlPath = '';
-    if (fromDate != null) urlPath += '?from=' + fromDate.toIso8601String();
-    if (toDate != null)
-      urlPath +=
-          (fromDate != null ? '&' : '?') + 'to=' + toDate.toIso8601String();
+  // Future<UserInfoModel> getUserInfo(
+  //     {required DateTime fromDate, required DateTime toDate}) {
+  //   String urlPath = '';
+  //   if (fromDate != null) urlPath += '?from=${fromDate.toIso8601String()}';
+  //   if (toDate != null)
+  //     urlPath +=
+  //         '${fromDate != null ? '&' : '?'}to=${toDate.toIso8601String()}';
 
-    return api.getUserInfofromAPI(urlPath);
-  }
+  //   return api.getUserInfofromAPI(urlPath);
+  // }
 
   Future<String> checkIfLoggedIn() {
     return api.checkLogin();

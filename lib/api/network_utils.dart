@@ -29,8 +29,7 @@ class NetworkUtil {
       const Duration(seconds: 10),
       onTimeout: () {
         // time has run out, do what you wanted to do
-        throw new Exception(
-            "لا يمكن الوصول للخادم ... تأكد من اتصالك بالانترنيت");
+        throw Exception("لا يمكن الوصول للخادم ... تأكد من اتصالك بالانترنيت");
       },
     );
   }
@@ -46,8 +45,7 @@ class NetworkUtil {
       const Duration(seconds: 10),
       onTimeout: () {
         // time has run out, do what you wanted to do
-        throw new Exception(
-            "لا يمكن الوصول للخادم ... تأكد من اتصالك بالانترنيت");
+        throw Exception("لا يمكن الوصول للخادم ... تأكد من اتصالك بالانترنيت");
       },
     );
   }

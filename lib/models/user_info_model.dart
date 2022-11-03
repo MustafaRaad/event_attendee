@@ -8,15 +8,15 @@ class UserInfoModel {
   UserInfoModel.fromJson(Map<String, dynamic> json) {
     accessToken = json['access_token'];
     tokenType = json['token_type'];
-    user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    user = json['user'] != null ? User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['access_token'] = this.accessToken;
-    data['token_type'] = this.tokenType;
-    if (this.user != null) {
-      data['user'] = this.user!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['access_token'] = accessToken;
+    data['token_type'] = tokenType;
+    if (user != null) {
+      data['user'] = user!.toJson();
     }
     return data;
   }
@@ -69,20 +69,20 @@ class User {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['email'] = this.email;
-    data['email_verified_at'] = this.emailVerifiedAt;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['company_group'] = this.companyGroup;
-    data['store'] = this.store;
-    data['region'] = this.region;
-    data['permission_group'] = this.permissionGroup;
-    data['enabled'] = this.enabled;
-    data['position'] = this.position;
-    data['event_ids'] = this.eventIds;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['email'] = email;
+    data['email_verified_at'] = emailVerifiedAt;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    data['company_group'] = companyGroup;
+    data['store'] = store;
+    data['region'] = region;
+    data['permission_group'] = permissionGroup;
+    data['enabled'] = enabled;
+    data['position'] = position;
+    data['event_ids'] = eventIds;
     return data;
   }
 }
