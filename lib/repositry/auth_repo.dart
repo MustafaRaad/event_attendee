@@ -12,7 +12,7 @@ class AuthRepo {
   }
 
   void storeToken(UserInfoModel user) async {
-    AuthenticationStorage store = new AuthenticationStorage();
+    AuthenticationStorage store = AuthenticationStorage();
     store.removeToken();
     store.storeToken(user.accessToken!);
   }
