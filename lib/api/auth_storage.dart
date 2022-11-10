@@ -43,4 +43,14 @@ class AuthenticationStorage {
     }
     return null;
   }
+  //  Future<AuthenticationData?> getQrInfo() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   var str = prefs.getString('user');
+  //   if (str != null) {
+  //     var decode = json.decode(str);
+  //     var data = AuthenticationData.fromStoreJson(decode);
+  //     return data;
+  //   }
+  //   return null;
+  // }
 }

@@ -1,14 +1,20 @@
 // ignore_for_file: unused_field
 
+import 'dart:async';
 import 'dart:io';
 import 'dart:developer';
-
+import 'package:event_attendee/screens/profile_screen.dart';
+import 'package:http/http.dart' as http;
+import '../api/auth_api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../api/auth_storage.dart';
 import '../common/theme_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../models/qr_info.dart';
 
 class QrScanScreen extends StatefulWidget {
   const QrScanScreen({super.key});
@@ -67,6 +73,7 @@ class QRViewExample extends StatefulWidget {
 }
 
 class _QRViewExampleState extends State<QRViewExample> {
+  final api = AuthenticationAPI();
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -84,16 +91,26 @@ class _QRViewExampleState extends State<QRViewExample> {
     controller!.resumeCamera();
   }
 
-  Future<void> _launchInWebViewWithoutJavaScript(Uri url) async {
-    if (!await canLaunchUrl(url)) {
-      launchUrl(
-        url,
-        mode: LaunchMode.inAppWebView,
-      );
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // Future<void> _launchInWebViewOrVC(Uri url) async {
+  //   String token = '';
+  //   @override
+  //   Future<void> initState() async {
+  //     // TODO: implement initState
+  //     super.initState();
+  //   }
+
+  //   // checkLogin();
+  //   if (!await canLaunchUrl(url)) {
+  //     launchUrl(
+  //       url,
+  //       mode: LaunchMode.inAppWebView,
+  //       webViewConfiguration: WebViewConfiguration(
+  //           headers: <String, String>{'Authorization': 'Bearer $token'}),
+  //     );
+  //   } else {
+  //     throw 'Could not launch $url';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -168,8 +185,8 @@ class _QRViewExampleState extends State<QRViewExample> {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
-        ? 250.0
-        : 300.0;
+        ? 300.0
+        : 450.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
@@ -185,16 +202,19 @@ class _QRViewExampleState extends State<QRViewExample> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    late Uri toLaunch;
+  _onQRViewCreated(QRViewController controller) async {
     setState(() {
       this.controller = controller;
     });
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-        toLaunch = Uri.parse('${result!.code}');
-        _launched = _launchInWebViewWithoutJavaScript(toLaunch);
+        if (result!.code != null) {
+          // await api.qrRequest(result!.code).then((value) => print(value));
+          // print('obj --->> $a');
+          controller.stopCamera();
+          qrRequest(result!.code);
+        }
       });
     });
   }
@@ -212,5 +232,18 @@ class _QRViewExampleState extends State<QRViewExample> {
   void dispose() {
     controller?.dispose();
     super.dispose();
+  }
+
+  qrRequest(url) async {
+    var ap = await api.qrRequest(url).then((value) => {
+          // print('value -----> $value'),
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ProfileScreen(),
+            ),
+          )
+        });
+    return ap;
   }
 }
