@@ -235,12 +235,12 @@ class _QRViewExampleState extends State<QRViewExample> {
   }
 
   qrRequest(url) async {
-    var ap = await api.qrRequest(url).then((value) => {
+    var ap = await api.qrRequest(url).then((userIdFromQr) => {
           // print('value -----> $value'),
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const ProfileScreen(),
+              builder: (context) => ProfileScreen(userIdFromQr),
             ),
           )
         });

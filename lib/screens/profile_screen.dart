@@ -1,4 +1,6 @@
 // ignore: unnecessary_import
+import 'package:event_attendee/models/profile_model.dart';
+import 'package:event_attendee/models/user_info_model.dart';
 import 'package:event_attendee/screens/qr_scan_screen.dart';
 // ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
@@ -7,9 +9,11 @@ import 'package:flutter/services.dart';
 import './login_screen.dart';
 import './splash_screen.dart';
 import '../widgets/header_widget.dart';
+import '../api/auth_api.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final String userIdFromQr;
+  const ProfileScreen(this.userIdFromQr, {super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -18,8 +22,25 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final double _drawerIconSize = 24;
-  final double _drawerFontSize = 17;
+  final api = AuthenticationAPI();
+  // final double _drawerIconSize = 24;
+  // final double _drawerFontSize = 17;
+  bool circular = true;
+  ProfileModel profileModel = ProfileModel(data: [userIdFromQr]);
+
+  @override
+  void initState() {
+    super.initState();
+    String userIdFromQr = widget().userIdFromQr;
+    fetchData(userIdFromQr);
+  }
+
+  void fetchData(userIdFromQr) async {
+    api.getUserInfofromAPI(userIdFromQr);
+    setState(() {
+      profileModel = ProfileModel.fromJson(response);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,123 +97,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         //     ),
         //   )
         // ],
-      ),
-      drawer: Drawer(
-        child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: const [
-                0.0,
-                1.0
-              ],
-                  colors: [
-                Theme.of(context).primaryColor.withOpacity(0),
-                Theme.of(context).colorScheme.secondary.withOpacity(0),
-              ])),
-          child: ListView(
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: const [0.0, 1.0],
-                    colors: [
-                      Theme.of(context).primaryColor,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
-                  ),
-                ),
-                child: Container(
-                  alignment: Alignment.bottomLeft,
-                  child: const Text(
-                    "Leftsphere.com",
-                    style: TextStyle(
-                        fontSize: 25,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.qr_code,
-                  size: _drawerIconSize,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                title: Text(
-                  'QR Camera',
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const QrScanScreen()));
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.screen_lock_landscape_rounded,
-                  size: _drawerIconSize,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                title: Text(
-                  'Splash Screen',
-                  style: TextStyle(
-                      fontSize: 17,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              const SplashScreen(title: "Splash Screen")));
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.login_rounded,
-                    size: _drawerIconSize,
-                    color: Theme.of(context).colorScheme.secondary),
-                title: Text(
-                  'Login Page',
-                  style: TextStyle(
-                      fontSize: _drawerFontSize,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.logout_rounded,
-                  size: _drawerIconSize,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-                title: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontSize: _drawerFontSize,
-                      color: Theme.of(context).colorScheme.secondary),
-                ),
-                onTap: () {
-                  SystemNavigator.pop();
-                },
-              ),
-            ],
-          ),
-        ),
       ),
       body: SingleChildScrollView(
         child: Stack(

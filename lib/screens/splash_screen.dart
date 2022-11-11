@@ -1,5 +1,6 @@
 import 'package:event_attendee/repositry/auth_repo.dart';
 import 'package:event_attendee/screens/profile_screen.dart';
+import 'package:event_attendee/screens/qr_scan_screen.dart';
 // ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
 import 'package:event_attendee/screens/login_screen.dart';
@@ -37,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
       }
       await repo.checkIfLoggedIn().then((value) {
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const ProfileScreen()));
+            MaterialPageRoute(builder: (context) => const QrScanScreen()));
       });
 
       if (mounted) {

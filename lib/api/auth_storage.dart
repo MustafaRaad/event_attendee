@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '../models/auth_info.dart';
+import '../models/profile_model.dart';
 
 class AuthenticationStorage {
   storeToken(String token) async {
@@ -28,29 +29,19 @@ class AuthenticationStorage {
     return '';
   }
 
-  void setUserInfomation(AuthenticationData data) async {
+  void setUserInfomation(ProfileModel data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user', json.encode(data));
+    await prefs.setString('data', json.encode(data));
   }
 
-  Future<AuthenticationData?> getUserInfomation() async {
+  Future<ProfileModel?> getUserInfomation() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var str = prefs.getString('user');
     if (str != null) {
       var decode = json.decode(str);
-      var data = AuthenticationData.fromStoreJson(decode);
+      var data = ProfileModel.fromJson(decode);
       return data;
     }
     return null;
   }
-  //  Future<AuthenticationData?> getQrInfo() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   var str = prefs.getString('user');
-  //   if (str != null) {
-  //     var decode = json.decode(str);
-  //     var data = AuthenticationData.fromStoreJson(decode);
-  //     return data;
-  //   }
-  //   return null;
-  // }
 }
