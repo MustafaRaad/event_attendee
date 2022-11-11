@@ -236,7 +236,7 @@ class _QRViewExampleState extends State<QRViewExample> {
 
   qrRequest(url) async {
     var ap = await api.qrRequest(url).then((value) => {
-          // print('value -----> $value'),
+          print('value -----> $value'),
           Navigator.push(
             context,
             MaterialPageRoute(
