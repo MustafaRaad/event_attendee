@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // final double _drawerIconSize = 24;
   // final double _drawerFontSize = 17;
   bool circular = true;
-  ProfileModel profileModel = ProfileModel(data: [userIdFromQr]);
+  ProfileModel? profileModel;
 
   @override
   void initState() {
@@ -36,9 +36,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void fetchData(userIdFromQr) async {
-    api.getUserInfofromAPI(userIdFromQr);
+    var data = await api.getUserInfofromAPI(userIdFromQr);
     setState(() {
-      profileModel = ProfileModel.fromJson(response);
+      if (data != null) {
+        profileModel = data;
+      } else {
+        print('error');
+      }
     });
   }
 
@@ -46,10 +50,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: const Text(
-        //   "Profile Page",
-        //   style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        // ),
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
         flexibleSpace: Container(
@@ -62,133 +62,122 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Theme.of(context).colorScheme.secondary,
               ])),
         ),
-        // actions: [
-        //   Container(
-        //     margin: const EdgeInsets.only(
-        //       top: 16,
-        //       right: 16,
-        //     ),
-        //     child: Stack(
-        //       children: <Widget>[
-        //         const Icon(Icons.notifications),
-        //         Positioned(
-        //           right: 0,
-        //           child: Container(
-        //             padding: const EdgeInsets.all(1),
-        //             decoration: BoxDecoration(
-        //               color: Colors.red,
-        //               borderRadius: BorderRadius.circular(6),
-        //             ),
-        //             constraints: const BoxConstraints(
-        //               minWidth: 12,
-        //               minHeight: 12,
-        //             ),
-        //             child: const Text(
-        //               '5',
-        //               style: TextStyle(
-        //                 color: Colors.white,
-        //                 fontSize: 8,
-        //               ),
-        //               textAlign: TextAlign.center,
-        //             ),
-        //           ),
-        //         )
-        //       ],
-        //     ),
-        //   )
-        // ],
       ),
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            const SizedBox(
-              height: 150,
-              child: HeaderWidget(150, false),
-            ),
-            Container(
-              alignment: Alignment.center,
-              // margin: const EdgeInsets.fromLTRB(25, 10, 25, 10),
-              // padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Column(
+      body: profileModel == null
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+              child: Stack(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    height: 100,
-                    // decoration: BoxDecoration(
-                    //   borderRadius: BorderRadius.circular(100),
-                    //   border: Border.all(width: 5, color: Colors.white),
-                    //   color: Colors.white,
-                    //   boxShadow: [
-                    //     BoxShadow(
-                    //       color: Colors.black12,
-                    //       blurRadius: 20,
-                    //       offset: const Offset(5, 5),
-                    //     ),
-                    //   ],
-                    // ),
-                    child: const Text(
-                      'Your Event Details',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 36,
-                          color: Colors.white),
-                    ),
-                    // child: Icon(
-                    //   Icons.person,
-                    //   size: 80,
-                    //   color: Colors.grey.shade300,
-                    // ),
-                  ),
                   const SizedBox(
-                    height: 30,
+                    height: 150,
+                    child: HeaderWidget(150, false),
                   ),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    padding: const EdgeInsets.all(10),
+                    alignment: Alignment.center,
                     child: Column(
-                      children: <Widget>[
-                        Card(
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15)),
-                            alignment: Alignment.center,
-                            child: Column(
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    ...ListTile.divideTiles(
-                                      color: Colors.grey,
-                                      tiles: [
-                                        const ListTile(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 6),
-                                          leading: Icon(Icons.person, size: 30),
-                                          title: Text("Name"),
-                                          subtitle: Text("Mustafa"),
-                                        ),
-                                        const ListTile(
-                                          leading: Icon(Icons.email, size: 30),
-                                          title: Text("Email"),
-                                          subtitle: Text("Ofy@gmail.com"),
-                                        ),
-                                        const ListTile(
-                                          leading: Icon(Icons.phone, size: 30),
-                                          title: Text("Phone"),
-                                          subtitle: Text("7705675477"),
-                                        ),
-                                        const ListTile(
-                                          leading: Icon(Icons.person, size: 30),
-                                          title: Text("About Me"),
-                                          subtitle: Text(
-                                              "This is a about me link and you can khow about me in this section."),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          height: 100,
+                          // decoration: BoxDecoration(
+                          //   borderRadius: BorderRadius.circular(100),
+                          //   border: Border.all(width: 5, color: Colors.white),
+                          //   color: Colors.white,
+                          //   boxShadow: [
+                          //     BoxShadow(
+                          //       color: Colors.black12,
+                          //       blurRadius: 20,
+                          //       offset: const Offset(5, 5),
+                          //     ),
+                          //   ],
+                          // ),
+                          child: const Text(
+                            'Your Event Details',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 36,
+                                color: Colors.white),
+                          ),
+                          // child: Icon(
+                          //   Icons.person,
+                          //   size: 80,
+                          //   color: Colors.grey.shade300,
+                          // ),
+                        ),
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            children: <Widget>[
+                              Card(
+                                child: Container(
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    children: <Widget>[
+                                      Column(
+                                        children: <Widget>[
+                                          ...ListTile.divideTiles(
+                                            color: Colors.grey,
+                                            tiles: [
+                                              ListTile(
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 12,
+                                                          vertical: 6),
+                                                  leading: const Icon(
+                                                      Icons.person,
+                                                      size: 30),
+                                                  title:
+                                                      const Text('Full Name'),
+                                                  subtitle: Text(
+                                                      '${profileModel!.data!.title} ${profileModel!.data!.nameFirst} ${profileModel!.data!.nameSecond} ${profileModel!.data!.nameLast}'),
+                                                  trailing: Text(
+                                                      'ID: ${profileModel!.data!.id}')),
+                                              ListTile(
+                                                leading: const Icon(Icons.email,
+                                                    size: 30),
+                                                title: const Text("Email"),
+                                                subtitle: Text(
+                                                    "${profileModel!.data!.email}"),
+                                              ),
+                                              ListTile(
+                                                leading: const Icon(Icons.phone,
+                                                    size: 30),
+                                                title: const Text("Phone"),
+                                                subtitle: Text(
+                                                    "${profileModel!.data!.phone}"),
+                                              ),
+                                              ListTile(
+                                                leading: const Icon(Icons.place,
+                                                    size: 30),
+                                                title: const Text("Place"),
+                                                subtitle: Text(
+                                                    "${profileModel!.data!.country} - ${profileModel!.data!.governorate}"),
+                                              ),
+                                              ListTile(
+                                                  leading: const Icon(
+                                                      Icons.account_balance,
+                                                      size: 30),
+                                                  title: const Text("Facility"),
+                                                  subtitle: Text(
+                                                      "${profileModel!.data!.facility}"),
+                                                  isThreeLine: true),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
                           ),
                         )
                       ],
@@ -196,10 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }

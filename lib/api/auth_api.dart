@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:event_attendee/models/profile_model.dart';
+
 import '../models/qr_info.dart';
 import '../models/user_info_model.dart';
 import './Network_Utils.dart';
@@ -45,11 +47,11 @@ class AuthenticationAPI {
     });
   }
 
-  Future<UserInfoModel> getUserInfofromAPI(String urlPath) async {
+  Future<ProfileModel> getUserInfofromAPI(String urlPath) async {
     String token = await AuthenticationStorage().readToken();
 
     final response = await _netUtil.get(
-      URLPaths.USERINFO + urlPath,
+      URLPaths.USERINFO + '/'+ urlPath,
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'authorization': 'bearer $token',
@@ -59,7 +61,7 @@ class AuthenticationAPI {
     final int statusCode = response.statusCode;
 
     if (statusCode == 200) {
-      return UserInfoModel.fromJson(json.decode(response.body));
+      return ProfileModel.fromJson(json.decode(response.body));
     } else if (statusCode == 401) {
       throw Exception(
           "غير مخول بالدخول .. الرجاء تسجيل الخروج ثم تسجيل الدخول");
